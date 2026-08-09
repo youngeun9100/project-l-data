@@ -1,0 +1,48 @@
+name: Update Lotto Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 토요일 21:30 KST, 실패 대비 일요일 09:30 KST 재확인
+    - cron: "30 12 * * 6"
+    - cron: "30 0 * * 0"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-lotto-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch and validate winning numbers
+        run: python scripts/update_lotto.py
+
+      - name: Validate generated file
+        run: python scripts/update_lotto.py --check
+
+      - name: Commit updated data
+        run: |
+          if git diff --quiet -- data/winning_numbers.json; then
+            echo "No new draw data."
+            exit 0
+          fi
+          git config user.name "project-l-data-bot"
+          git config user.email "project-l-data-bot@users.noreply.github.com"
+          git add data/winning_numbers.json
+          git commit -m "data: update lotto winning numbers"
+          git push
+
