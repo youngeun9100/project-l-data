@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "latestDraw": 1238,
-  "latestDrawDate": "2026-08-22",
+  "latestDraw": 1239,
+  "latestDrawDate": "2026-08-29",
   "source": "https://www.dhlottery.co.kr/lt645/winNumber",
   "draws": [
     {
@@ -16097,6 +16097,19 @@
         42
       ],
       "bonus": 22
+    },
+    {
+      "draw": 1239,
+      "date": "2026-08-29",
+      "numbers": [
+        11,
+        13,
+        22,
+        32,
+        33,
+        36
+      ],
+      "bonus": 8
     }
   ]
 }
